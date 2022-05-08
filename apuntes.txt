@@ -1,0 +1,32 @@
+
+
+#Tipos de Datos (Clase 17)
+
+
+Clasicos:
+
+- str
+- int
+- Float
+- bool
+
+
+Exoticos:
+
+- Enum (Conjunto de valores predeterminados)
+- HttpUrl (Url valida)
+- File Path (Ruta completa ej: c:/windows/system/432.dll)
+- Directorio Path (/matcli/somefolder/)
+- emailUser: (email, ej: yomismosoy@elquemanday.voy)
+- Payment card number
+- IPvAnyAdress
+- Negative Float
+- Positive Float
+- Negative int
+- Positive Int
+
+para mas informacion: https://pydantic-docs.helpmanual.io/usage/types/#pydantic-types
+
+
+
+
