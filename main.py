@@ -21,12 +21,31 @@ class HairColor(Enum):
     black = "black"
     red = "red"
 
+class Countries(Enum):
+    argentina = "Argentina"
+    chile = "Chile"
+    uruguay = "Uruguay"
+    paraguay = "Paraguay"
+    colombia = "Colombia"
+    venezuela = "Venezuela"
+    peru = "Peru"
+    bolivia = "Bolivia"
+    brasil = "Brasil"
+    ecuador = "Ecuador"
 
 
 class Location(BaseModel):
-    city: str
-    state: str
-    country: str
+    city: str = Field(
+        ...,
+        min_length=4,
+        max_length=50
+    )
+    state: str = Field(
+        ...,
+        min_length=4,
+        max_length=50
+    )
+    country: Optional[Countries] = Field(default=None)
 
 class Person(BaseModel):
     firt_name : str = Field(
@@ -44,6 +63,17 @@ class Person(BaseModel):
     )
     hair_color : Optional[HairColor] = Field(default=None)
     is_married : Optional[bool] = Field(default=None)
+
+    class Config:
+        schema_extra = {
+            "Facundo": {
+                "first_name" : "Facundo",
+                "last_name" : "Garcia Martoni",
+                "age" : 21,
+                "hair_color" : "blonde",
+                "is_married" : False
+            }
+        }
 
     
 
