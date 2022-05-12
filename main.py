@@ -13,7 +13,7 @@ from fastapi import Body, Query, Path
 
 app = FastAPI()
 
-#Models
+###### MODELS #################
 
 class HairColor(Enum):
     white = "white"
@@ -37,12 +37,12 @@ class Countries(Enum):
 class Location(BaseModel):
     city: str = Field(
         ...,
-        min_length=4,
+        min_length=1,
         max_length=50
     )
     state: str = Field(
         ...,
-        min_length=4,
+        min_length=1,
         max_length=50
     )
     country: Optional[Countries] = Field(default=None)
@@ -76,19 +76,19 @@ class Person(BaseModel):
         }
 
     
-
+###################### MODELS   ######################
 
 @app.get("/")
 def home():
     return {"Hello" : "World"}
 
-#Request and Response Body
+##### Request and Response Body
 
 @app.post("/person/new")
 def create_person(person : Person = Body(...)):
     return person
 
-#Validaciones: Query parameters
+##### Validaciones: Query parameters
 
 @app.get("/person/detail")
 def show_person(
@@ -108,22 +108,22 @@ def show_person(
     return {name : age}
 
 
-#Validaciones: Path Parameters
+##### Validaciones: Path Parameters
 
-@app.get("/person/detail/{person_id")
+@app.get("/person/detail/{person_id}")
 def show_person(
     person_id: int = Path(
         ...,
         title="Person ID",
         description="This is the person ID.",
-        gt=0)
+        gt=1)
 
 ):  
     return {person_id: "It Exists!"}
 
 
 
-#validaciones: Request Body
+#### Validaciones: Request Body
 
 
 @app.put("/person/{person_id}")
