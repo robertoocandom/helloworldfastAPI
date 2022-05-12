@@ -33,8 +33,7 @@ class Countries(Enum):
     bolivia = "Bolivia"
     brasil = "Brasil"
     ecuador = "Ecuador"
-
-
+    
 class Location(BaseModel):
     city: str = Field(
         ...,
@@ -48,7 +47,7 @@ class Location(BaseModel):
     )
     country: Optional[Countries] = Field(default=None)
 
-class Person(BaseModel):
+class PersonBase(BaseModel):
     firt_name : str = Field(
         ..., 
         min_length=1,
@@ -70,31 +69,12 @@ class Person(BaseModel):
     )
     hair_color : Optional[HairColor] = Field(default=None, example=HairColor.black)
     is_married : Optional[bool] = Field(default=None, example=False)
+
+class Person(PersonBase):
     password: str = Field(..., min_length=8)
 
-class PersonOut(BaseModel):
-    firt_name : str = Field(
-        ..., 
-        min_length=1,
-        max_length=50,
-        example="MIguel"
-        )
-
-    last_name : str = Field(
-        ..., 
-        min_length=1,
-        max_length=50,
-        example="Torres"
-        )
-    age : int = Field(
-        ...,
-        gt=0,
-        le=115,
-        example=25
-    )
-    hair_color : Optional[HairColor] = Field(default=None, example=HairColor.black)
-    is_married : Optional[bool] = Field(default=None, example=False)
-
+class PersonOut(PersonBase):
+    pass
     
 ###################### MODELS   ######################
 
