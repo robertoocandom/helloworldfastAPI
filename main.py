@@ -34,7 +34,6 @@ class Countries(Enum):
     brasil = "Brasil"
     ecuador = "Ecuador"
 
-
 class Location(BaseModel):
     city: str = Field(
         ...,
@@ -53,7 +52,7 @@ class Person(BaseModel):
         ..., 
         min_length=1,
         max_length=50,
-        example="MIguel"
+        example="Miguel"
         )
 
     last_name : str = Field(
@@ -70,7 +69,7 @@ class Person(BaseModel):
     )
     hair_color : Optional[HairColor] = Field(default=None, example=HairColor.black)
     is_married : Optional[bool] = Field(default=None, example=False)
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=8, example="soylaclaveplanademiguel")
 
 class PersonOut(BaseModel):
     firt_name : str = Field(
@@ -104,7 +103,7 @@ def home():
 
 ##### Request and Response Body
 
-@app.post("/person/new", response_model=Person, response_model_exclude={'password'})
+@app.post("/person/new", response_model=PersonOut)
 def create_person(person : Person = Body(...)):
     return person
 
