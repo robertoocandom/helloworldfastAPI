@@ -101,7 +101,6 @@ def home():
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED 
     )
-
 def create_person(person : Person = Body(...)):
     return person
 
@@ -141,7 +140,6 @@ def show_person(
 
 ):  
     return {person_id: "It Exists!"}
-
 
 
 #### Validaciones: Request Body
