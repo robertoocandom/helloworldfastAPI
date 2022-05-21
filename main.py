@@ -97,14 +97,23 @@ def home():
 ##### Request and Response Body
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+@app.post("/person/new", response_model=PersonOut)
+=======
+>>>>>>> remove_duplicate
 @app.post(
     path="/person/new", 
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED 
     )
 
+<<<<<<< HEAD
 =======
 @app.post("/person/new", response_model=PersonOut)
+>>>>>>> remove_duplicate
+=======
+>>>>>>> 9efe3fc24d75168d1c9817f843b341592a5e0128
 >>>>>>> remove_duplicate
 def create_person(person : Person = Body(...)):
     return person
