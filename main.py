@@ -1,15 +1,20 @@
 #Python
+from ast import For
 from doctest import Example
+from email import message
+from tkinter.messagebox import NO
 from typing import Optional
 from enum import Enum
 
 #Pydantic
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from pydantic import Field
+from pydantic import EmailStr
 
 #FastAPI
-from fastapi import FastAPI, Query
-from fastapi import Body, Query, Path
+from fastapi import Cookie, FastAPI, Header, Query
+from fastapi import status
+from fastapi import Body, Query, Path, Form
 
 
 app = FastAPI()
@@ -33,7 +38,7 @@ class Countries(Enum):
     bolivia = "Bolivia"
     brasil = "Brasil"
     ecuador = "Ecuador"
-    
+
 class Location(BaseModel):
     city: str = Field(
         ...,
@@ -75,22 +80,40 @@ class Person(PersonBase):
 
 class PersonOut(PersonBase):
     pass
-    
+
+class LoginOut(BaseModel):
+    username: str = Field(..., max_length=20, example="Miguel2021")
+    message: str = Field(default="Login Succesfuly..!")
+
 ###################### MODELS   ######################
 
-@app.get("/")
+@app.get(
+    path="/", 
+    status_code=status.HTTP_200_OK
+    )
 def home():
     return {"Hello" : "World"}
 
 ##### Request and Response Body
 
+<<<<<<< HEAD
 @app.post("/person/new", response_model=PersonOut)
+=======
+@app.post(
+    path="/person/new", 
+    response_model=PersonOut,
+    status_code=status.HTTP_201_CREATED 
+    )
+
+>>>>>>> 9efe3fc24d75168d1c9817f843b341592a5e0128
 def create_person(person : Person = Body(...)):
     return person
 
 ##### Validaciones: Query parameters
 
-@app.get("/person/detail")
+@app.get(
+    path="/person/detail",
+    status_code=status.HTTP_200_OK)
 def show_person(
     name: Optional[str] = Query(
         None, 
@@ -110,7 +133,9 @@ def show_person(
 
 ##### Validaciones: Path Parameters
 
-@app.get("/person/detail/{person_id}")
+@app.get(
+    path="/person/detail/{person_id}",
+    status_code=status.HTTP_200_OK)
 def show_person(
     person_id: int = Path(
         ...,
@@ -126,7 +151,9 @@ def show_person(
 #### Validaciones: Request Body
 
 
-@app.put("/person/{person_id}")
+@app.put(
+    path="/person/{person_id}",
+    status_code=status.HTTP_200_OK)
 def update_person(
     person_id: int = Path(
         ...,
@@ -141,3 +168,42 @@ def update_person(
     results.update(Location.dict())
 
     return results
+
+
+### Forms
+
+@app.post(
+    path="/login",
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK
+)
+def login(username: str = Form(...,), password: str = Form(...)):
+    return LoginOut(username=username)
+
+
+### Cookies and Headers Paraneters #### 
+
+@app.post(
+    path='/contact',
+    status_code=status.HTTP_200_OK
+)
+def contact(
+    first_name:str = Form(
+        ...,
+        max_leght=20,
+        min_length=1
+    ),
+    last_name:str = Form(
+        ...,
+        max_leght=20,
+        min_length=1
+    ),
+    email: EmailStr = Form(...),
+    message: str = Form(..., 
+    min_length=20
+    ),
+    user_agent: Optional[str] = Header(default=None),
+    ads: Optional[str] = Cookie(default=None)
+):
+    return user_agent
+
