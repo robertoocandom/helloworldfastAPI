@@ -1,21 +1,25 @@
 #Python
+from ast import For
 from doctest import Example
+from email import message
+from tkinter.messagebox import NO
 from typing import Optional
 from enum import Enum
 
 #Pydantic
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from pydantic import Field
+from pydantic import EmailStr
 
 #FastAPI
-from fastapi import FastAPI, Query
+from fastapi import Cookie, FastAPI, Header, Query
 from fastapi import status
-from fastapi import Body, Query, Path
+from fastapi import Body, Query, Path, Form
 
 
 app = FastAPI()
 
-###### MODELS #################
+################ MODELS #################
 
 class HairColor(Enum):
     white = "white"
@@ -53,7 +57,7 @@ class PersonBase(BaseModel):
         ..., 
         min_length=1,
         max_length=50,
-        example="MIguel"
+        example="Miguel"
         )
 
     last_name : str = Field(
@@ -72,11 +76,15 @@ class PersonBase(BaseModel):
     is_married : Optional[bool] = Field(default=None, example=False)
 
 class Person(PersonBase):
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=8, example='soyelpassdemiguel')
 
 class PersonOut(PersonBase):
     pass
-    
+
+class LoginOut(BaseModel):
+    username: str = Field(..., max_length=20, example="Miguel2021")
+    message: str = Field(default="Login Succesfuly..!")
+
 ###################### MODELS   ######################
 
 @app.get(
@@ -156,3 +164,42 @@ def update_person(
     results.update(Location.dict())
 
     return results
+
+
+### Forms
+
+@app.post(
+    path="/login",
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK
+)
+def login(username: str = Form(...,), password: str = Form(...)):
+    return LoginOut(username=username)
+
+
+### Cookies and Headers Paraneters #### 
+
+@app.post(
+    path='/contact',
+    status_code=status.HTTP_200_OK
+)
+def contact(
+    first_name:str = Form(
+        ...,
+        max_leght=20,
+        min_length=1
+    ),
+    last_name:str = Form(
+        ...,
+        max_leght=20,
+        min_length=1
+    ),
+    email: EmailStr = Form(...),
+    message: str = Form(..., 
+    min_length=20
+    ),
+    user_agent: Optional[str] = Header(default=None),
+    ads: Optional[str] = Cookie(default=None)
+):
+    return user_agent
+
