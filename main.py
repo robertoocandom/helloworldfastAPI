@@ -14,7 +14,7 @@ from fastapi import Body, Query, Path
 
 app = FastAPI()
 
-###### MODELS #################
+################ MODELS #################
 
 class HairColor(Enum):
     white = "white"
@@ -71,7 +71,7 @@ class PersonBase(BaseModel):
     is_married : Optional[bool] = Field(default=None, example=False)
 
 class Person(PersonBase):
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=8, example='soyelpassdemiguel')
 
 class PersonOut(PersonBase):
     pass
@@ -84,7 +84,7 @@ def home():
 
 ##### Request and Response Body
 
-@app.post("/person/new", response_model=Person, response_model_exclude={'password'})
+@app.post("/person/new", response_model=PersonOut)
 def create_person(person : Person = Body(...)):
     return person
 
