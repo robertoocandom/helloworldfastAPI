@@ -29,4 +29,21 @@ para mas informacion: https://pydantic-docs.helpmanual.io/usage/types/#pydantic-
 
 
 
+Tipos de Entradas de Datos
+
+----> Path Parameters
+----> Query Parameters
+----> Request Body
+----> Forms
+----> Headers
+----> Cookies
+----> Files
+-------> File
+-------> Uploadfile
+----------> Filename
+----------> Content_type(.jpg,, mp3, videos)
+----------> File
+
+
+
 
