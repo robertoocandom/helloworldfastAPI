@@ -82,7 +82,7 @@ class PersonOut(PersonBase):
     pass
 
 class LoginOut(BaseModel):
-    username: str = Field(..., max_length=20, example="Miguel2021")
+    username: str = Field(..., max_length=20, example="Miguel.2022")
     message: str = Field(default="Login Succesfuly..!")
 
 ###################### MODELS   ######################
@@ -164,15 +164,16 @@ def update_person(
     return results
 
 
-### Forms
+############### Forms  ###########################
 
 @app.post(
     path="/login",
     response_model=LoginOut,
     status_code=status.HTTP_200_OK
 )
-def login(username: str = Form(...,), password: str = Form(...)):
+def login(username: str = Form(...), password: str = Form(...)):
     return LoginOut(username=username)
+
 
 
 ### Cookies and Headers Paraneters #### 
