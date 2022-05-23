@@ -1,20 +1,17 @@
 #Python
-from ast import For
-from doctest import Example
-from email import message
-from tkinter.messagebox import NO
 from typing import Optional
 from enum import Enum
 
 #Pydantic
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from pydantic import Field
 from pydantic import EmailStr
 
 #FastAPI
-from fastapi import Cookie, FastAPI, Header, Query, UploadFile, File
+from fastapi import FastAPI
+from fastapi import HTTPException
 from fastapi import status
-from fastapi import Body, Query, Path, Form
+from fastapi import Body, Header, Query, Path, Form, File, Cookie, UploadFile
 
 
 app = FastAPI()
@@ -127,6 +124,7 @@ def show_person(
 
 
 ##### Validaciones: Path Parameters
+persons = [1,2,3,4,5]
 
 @app.get(
     path="/person/detail/{person_id}",
@@ -138,7 +136,12 @@ def show_person(
         description="This is the person ID.",
         gt=1)
 
-):  
+):
+    if person_id not in persons:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="!This person doesn't exist!"
+        )
     return {person_id: "It Exists!"}
 
 
